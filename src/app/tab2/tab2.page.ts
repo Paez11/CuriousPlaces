@@ -1,7 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NotesService } from '../services/notes.service';
 import { GuiService } from '../services/gui.service';
+import { photoService } from '../services/photo.service';
+import { Camera, CameraResultType } from '@capacitor/camera';
+import { IonImg } from '@ionic/angular';
 
 @Component({
   selector: 'app-tab2',
@@ -9,10 +12,12 @@ import { GuiService } from '../services/gui.service';
   styleUrls: ['tab2.page.scss']
 })
 export class Tab2Page {
+  @ViewChild('photo') photo:IonImg;
   todo: FormGroup;
   constructor(
     private formBuilder:FormBuilder,
     private noteS:NotesService,
+    private photoS:photoService,
     private gui:GuiService
   ) {
     this.todo = this.formBuilder.group({
@@ -40,5 +45,35 @@ export class Tab2Page {
     
     
   }
+
+  public async takePhoto(){
+    const image = await Camera.getPhoto({
+    quality: 100,
+    allowEditing: true,
+    resultType: CameraResultType.Base64,
+
+  })
+
+  // image.webPath will contain a path that can be set as an image src.
+  // You can access the original file using image.path, which can be
+  // passed to the Filesystem API to read the raw data of the image,
+  // if desired (or pass resultType: CameraResultType.Base64 to getPhoto)
+  let imageUrl = image.base64String;
+  console.log(image);
+  console.log(imageUrl);
+
+  var signatures = {
+    iVBORw0KGgo: "image/png"
+  };
+  imageUrl="data:"+signatures.iVBORw0KGgo+";base64,"+imageUrl;
+  // Can be set to the src of an image now
+  this.photo.src = imageUrl;
+  this.photo.alt=" w ";
+}
+
+public async uploadPhoto(){
+  this.photoS.addPhoto({data:this.photo.src});
+
+}
 
 }

@@ -10,11 +10,11 @@ export class Tab3Page {
   @ViewChild('foto') foto:IonImg;
   constructor() {}
 
-  public async shotPhoto(){
+  public async takePhoto(){
     const image = await Camera.getPhoto({
-      quality: 90,
+      quality: 100,
       allowEditing: true,
-      resultType: CameraResultType.Uri,
+      resultType: CameraResultType.Base64,
 
     });
   
@@ -22,7 +22,10 @@ export class Tab3Page {
     // You can access the original file using image.path, which can be
     // passed to the Filesystem API to read the raw data of the image,
     // if desired (or pass resultType: CameraResultType.Base64 to getPhoto)
-    let imageUrl = image.webPath;
+    let imageUrl = image.base64String;
+    var signatures = {
+      
+    }
   
     // Can be set to the src of an image now
 

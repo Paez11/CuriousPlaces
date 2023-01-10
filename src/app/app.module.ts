@@ -17,7 +17,7 @@ import { GuiService } from './services/gui.service';
     BrowserModule, 
     IonicModule.forRoot(), 
     AppRoutingModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig)
+    AngularFireModule.initializeApp(environment.firebaseConfig),
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
