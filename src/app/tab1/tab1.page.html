@@ -20,7 +20,7 @@
     </ion-item-options>
 
     <ion-item class="note">
-      <ion-label><h2>{{note.title}}</h2><img src="" alt="photo"><p>{{note.description}}</p></ion-label>
+      <ion-label><h2>{{note.title}}</h2><img src={{note.notePhoto}} alt="photo"><p>{{note.description}}</p></ion-label>
     </ion-item>
 
     <ion-item-options side="end" (ionSwipe)="this.deleteNote(note)">

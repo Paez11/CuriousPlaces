@@ -32,9 +32,11 @@ export class Tab2Page {
     try{
       await this.noteS.addNote({
         title:this.todo.get('title').value,
-        description:this.todo.get('description').value
+        description:this.todo.get('description').value,
+        notePhoto:this.photo.src
       });
       this.todo.reset("");
+      this.photo.alt;
       this.gui.showToast("¡Nota insertada correctamente!");
     }catch(err){
       console.error(err);
@@ -48,7 +50,7 @@ export class Tab2Page {
 
   public async takePhoto(){
     const image = await Camera.getPhoto({
-    quality: 100,
+    quality: 90,
     allowEditing: true,
     resultType: CameraResultType.Base64,
 
@@ -59,8 +61,6 @@ export class Tab2Page {
   // passed to the Filesystem API to read the raw data of the image,
   // if desired (or pass resultType: CameraResultType.Base64 to getPhoto)
   let imageUrl = image.base64String;
-  console.log(image);
-  console.log(imageUrl);
 
   var signatures = {
     iVBORw0KGgo: "image/png"
