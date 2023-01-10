@@ -1,35 +1,51 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { Camera, CameraResultType } from '@capacitor/camera';
-import { IonImg } from '@ionic/angular';
+import * as Leaflet from 'leaflet';
 @Component({
   selector: 'app-tab3',
   templateUrl: 'tab3.page.html',
   styleUrls: ['tab3.page.scss']
 })
 export class Tab3Page {
-  @ViewChild('foto') foto:IonImg;
-  constructor() {}
+  constructor(){}
+  map: Leaflet.Map;
+  ubi_lat: Leaflet;
+  ubi_long: Leaflet;
 
-  public async takePhoto(){
-    const image = await Camera.getPhoto({
-      quality: 100,
-      allowEditing: true,
-      resultType: CameraResultType.Base64,
+  ionViewDidEnter() {
+    this.leafletMap();
+  }
 
-    });
-  
-    // image.webPath will contain a path that can be set as an image src.
-    // You can access the original file using image.path, which can be
-    // passed to the Filesystem API to read the raw data of the image,
-    // if desired (or pass resultType: CameraResultType.Base64 to getPhoto)
-    let imageUrl = image.base64String;
-    var signatures = {
-      
-    }
-  
-    // Can be set to the src of an image now
+  leafletMap() {    
+    this.map = new Leaflet.Map('mapId', {
+      renderer: Leaflet.canvas()
+    })
+    Leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: ''
+    }).addTo(this.map);
+    this.map.locate({
+      setView: true,
+      maxZoom: 15,
+      timeout: 3000,
+      enableHighAccuracy: true,
+      maximumAge: 3600
+    }).on('locationfound', (e) => {
+      let markerGroup = Leaflet.featureGroup();
+      this.ubi_lat = e.latitude;
+      this.ubi_long = e.longitude;
+      let marker = Leaflet.marker([e.latitude, e.longitude], {draggable: true}).on('dragend', (ev) => {
+        var chagedPos = ev.target.getLatLng();
+        this.ubi_lat = chagedPos.lat;
+        this.ubi_long = chagedPos.lng;
+      })
+      markerGroup.addLayer(marker);
+      this.map.addLayer(markerGroup);
+      }).on('locationerror', (err) => {
+        alert(err.message);
+    })
+  }
 
-    this.foto.src = imageUrl;
+  ionViewWillLeave() {
+    this.map.remove();
   }
 
 }
