@@ -3,5 +3,7 @@ export interface Note{
     title: string,
     description: string,
     notePhoto?: string,
+    latitud?: number,
+    longitud?: number
     hidded?: boolean
 }

@@ -9,7 +9,7 @@
 <ion-content [fullscreen]="true">
   <form [formGroup]="todo" (ngSubmit)="logForm()" class="form">
     <ion-item>
-      <ion-label>Tittle</ion-label>
+      <ion-label>Title</ion-label>
       <ion-input type="text" formControlName="title"></ion-input>
     </ion-item>
     <ion-item>
@@ -19,10 +19,10 @@
     <ion-item>
       <div class="container">
         <ion-button class="select" (click)="takePhoto();" color="primary" fill="outline">Photo</ion-button>
-        <ion-img #photo src=""></ion-img>
+        <ion-img #photo></ion-img>
       </div>
     </ion-item>
-    <ion-button class="upload" (click)="uploadPhoto()" shape="round" color="primary" fill="outline" type="submit" [disabled]="!todo.valid">Submit</ion-button>
+    <ion-button class="upload" shape="round" color="primary" fill="outline" type="submit" [disabled]="!todo.valid">Submit</ion-button>
   </form>
 </ion-content>
 

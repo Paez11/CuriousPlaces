@@ -64,7 +64,7 @@ export class Tab1Page implements OnInit {
       this.noteS.removeNote(note.id);
       this.notes = this.notes.filter(n=> n.id!=note.id);
     },3000);
-    this.gui.showToastOptions("Deshacer borrado",()=>{
+    this.gui.showToastOptions("undo delete",()=>{
       clearTimeout(timeout); //cancelada la cuenta atrás para el borrado en ddbb
       note.hided=undefined;
     });

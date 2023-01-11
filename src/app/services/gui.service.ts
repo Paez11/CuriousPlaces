@@ -42,7 +42,7 @@ export class GuiService {
       duration: 3000,
       buttons: [
         {
-          text: 'Cancelar',
+          text: 'Cancel',
           role: 'cancel',
           handler: () => { callBackFn(); }
         }

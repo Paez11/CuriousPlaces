@@ -7,14 +7,21 @@ import * as Leaflet from 'leaflet';
 })
 export class Tab3Page {
   constructor(){}
+  locationfound = Leaflet.icon({
+    iconUrl: 'assets/icon/location.png',
+
+    iconSize:     [38, 95], // size of the icon
+    iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+  });
   map: Leaflet.Map;
-  ubi_lat: Leaflet;
-  ubi_long: Leaflet;
+  ubi_lat: any;
+  ubi_long: any;
 
   ionViewDidEnter() {
     this.leafletMap();
   }
-
+  
   leafletMap() {    
     this.map = new Leaflet.Map('mapId', {
       renderer: Leaflet.canvas()
@@ -28,18 +35,18 @@ export class Tab3Page {
       timeout: 3000,
       enableHighAccuracy: true,
       maximumAge: 3600
-    }).on('locationfound', (e) => {
+    }).on('locationfound',(e) => {
       let markerGroup = Leaflet.featureGroup();
       this.ubi_lat = e.latitude;
       this.ubi_long = e.longitude;
-      let marker = Leaflet.marker([e.latitude, e.longitude], {draggable: true}).on('dragend', (ev) => {
+      let marker = Leaflet.marker([e.latitude, e.longitude]).on('locationfound', (ev) => {
         var chagedPos = ev.target.getLatLng();
         this.ubi_lat = chagedPos.lat;
         this.ubi_long = chagedPos.lng;
-      })
+      }).bindPopup('your current location').openPopup();
       markerGroup.addLayer(marker);
       this.map.addLayer(markerGroup);
-      }).on('locationerror', (err) => {
+      }).on((err) => {
         alert(err.message);
     })
   }
